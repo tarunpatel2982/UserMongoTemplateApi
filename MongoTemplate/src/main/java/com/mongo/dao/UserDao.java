@@ -1,0 +1,13 @@
+package com.mongo.dao;
+
+import java.util.List;
+
+import com.mongo.bean.User;
+
+public interface UserDao {
+
+	public List<User> getUser();
+	
+	
+	
+}
