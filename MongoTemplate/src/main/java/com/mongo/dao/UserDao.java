@@ -8,6 +8,8 @@ public interface UserDao {
 
 	public List<User> getUser();
 	
-	
+	public Boolean AddUser(User user);
+	public Boolean deleteUser(String id);
+
 	
 }

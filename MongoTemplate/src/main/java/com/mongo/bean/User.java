@@ -9,6 +9,7 @@ public class User {
 //	private static final long serialVersionUID = 1L;
 	@Id
 	private String id;
+	
 	private String name;
 
 	public User() {

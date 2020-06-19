@@ -18,5 +18,23 @@ public class UserServiceImpl implements UserService {
 	{
 		return dao.getUser();
 	}
+
+//	@Override
+//	public void AddUser(User user) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+
+	@Override
+	public boolean AddUser(User user) {
+		// TODO Auto-generated method stub
+		return dao.AddUser(user);
+	}
+
+	@Override
+	public Boolean deleteUser(String id) {
+		// TODO Auto-generated method stub
+		return dao.deleteUser(id);
+	}
 	
 }
