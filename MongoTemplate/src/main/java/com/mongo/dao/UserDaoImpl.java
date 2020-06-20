@@ -75,4 +75,21 @@ public class UserDaoImpl  implements UserDao{
 		return status;
 	}
 	
+	
+	public User findUserId(String id)
+	{
+		Query query = new Query(Criteria.where("id").is(id));
+		
+		System.out.println("test " + query);
+ 
+     // Return user object.
+        return   mongoTemplate.findOne(query, User.class,NAME);
+ 
+	}
+	
+	
+	public void update(String id,User user)
+	{
+		mongoTemplate.save(user, NAME);
+	}
 }

@@ -3,12 +3,16 @@ package com.mongo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mongo.bean.User;
@@ -42,4 +46,20 @@ public class UserController {
 			return id;
 			
 		}
+	 @Autowired
+	 UserDaoImpl u;
+	 @CrossOrigin(origins="http://localhost:4200") 
+	 @GetMapping("/edit/{id}")
+	    public User editUser(@PathVariable("id") String id ) {
+	            System.out.println("test" + id);
+	        return  u.findUserId(id);
+	    }
+	 @CrossOrigin(origins="http://localhost:4200") 	
+	 @PutMapping("/update/{id}")
+	    public ResponseEntity<?> update(@PathVariable("id") String id, @RequestBody User user ) {
+	            System.out.println("test" + id);
+	            u.update(id, user); 
+	        return  ResponseEntity.ok("update record");
+	    }
+	 
 }
