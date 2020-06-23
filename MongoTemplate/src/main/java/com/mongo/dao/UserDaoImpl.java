@@ -10,8 +10,10 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
+import com.mongo.bean.Account;
 import com.mongo.bean.User;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -88,8 +90,73 @@ public class UserDaoImpl  implements UserDao{
 	}
 	
 	
-	public void update(String id,User user)
+	public boolean update(String id,User user)
 	{
-		mongoTemplate.save(user, NAME);
+		boolean status=false;
+		try {
+			 status=true;  
+				mongoTemplate.save(user, NAME);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return status;  
+		
+	}
+
+	@Override
+	public Account login(String userName, String password) {
+		
+		System.out.println("test user name : " + userName);
+		try {
+			Query query = new Query();
+			Account account1 = mongoTemplate.findOne(query.addCriteria(
+					Criteria.where("userName").is(userName)), Account.class);
+			System.out.println("test  account  : "  + account1);
+			System.out.println("test name : " + account1.getFullName());
+			System.out.println("test password : " + account1.getPassword());
+			if( account1 != null)
+			{
+				System.out.println("contorller password: " + password);
+				BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+				if(bCryptPasswordEncoder.matches( password, account1.getPassword()))
+				{
+					System.out.println("Login");
+				}
+				else
+				{
+					System.out.println("not ");
+				}
+			}
+			return account1;
+		} catch (Exception e) {
+			// TODO: handle exception
+			
+			return null;
+		}
+	}
+
+	@Override
+	public boolean signUp(Account account) {
+		boolean st=false;
+		try {
+			BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+	          account.setPassword(bCryptPasswordEncoder.encode(account.getPassword()));
+			mongoTemplate.insert(account);
+			st=true;
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e);
+		}
+		
+		return st;
+		
+	}
+
+	@Override
+	public void changeProfile(Account account) {
+		mongoTemplate.save(account);
+		
 	}
 }

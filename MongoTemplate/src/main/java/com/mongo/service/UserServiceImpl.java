@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mongo.bean.Account;
 import com.mongo.bean.User;
 import com.mongo.dao.UserDaoImpl;
 
@@ -35,6 +36,25 @@ public class UserServiceImpl implements UserService {
 	public Boolean deleteUser(String id) {
 		// TODO Auto-generated method stub
 		return dao.deleteUser(id);
+	}
+
+	@Override
+	public Account login(String userName, String password) {
+		// TODO Auto-generated method stub
+		return dao.login(userName, password);
+	}
+
+	@Override
+	public boolean signUp(Account account) {
+		// TODO Auto-generated method stub
+		
+		return dao.signUp(account);
+	}
+
+	@Override
+	public void changeProfile(Account account) {
+		// TODO Auto-generated method stub
+		dao.changeProfile(account);
 	}
 	
 }

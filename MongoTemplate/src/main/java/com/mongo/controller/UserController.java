@@ -2,12 +2,17 @@ package com.mongo.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+import javax.swing.text.StyledEditorKit.BoldAction;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mongo.bean.Account;
 import com.mongo.bean.User;
 import com.mongo.dao.UserDaoImpl;
 import com.mongo.service.UserServiceImpl;
@@ -56,10 +62,38 @@ public class UserController {
 	    }
 	 @CrossOrigin(origins="http://localhost:4200") 	
 	 @PutMapping("/update/{id}")
-	    public ResponseEntity<?> update(@PathVariable("id") String id, @RequestBody User user ) {
+	    public Boolean update(@PathVariable("id") String id, @RequestBody User user ) {
 	            System.out.println("test" + id);
-	            u.update(id, user); 
-	        return  ResponseEntity.ok("update record");
+	          
+	        return  u.update(id, user);
 	    }
 	 
+	 @PostMapping("/login" )
+	 public String signUp(@RequestBody Account account,HttpSession httpSession )
+	 {
+		 
+		 System.out.println("test 1 ");
+		 Account account2= service.login(account.getUserName(),account.getPassword());
+		 System.out.println("ak : " + account2);
+		 if(account2 == null)
+		 {
+			 System.out.println("invlid ");
+			 return null;
+			 
+		 }
+		 else
+		 {
+			
+			 httpSession.setAttribute("userName", account.getUserName());
+			 System.out.println("test session : " + httpSession);
+			 return null;
+		 }
+	 }
+	 
+	 @PostMapping("/addAC")
+	    public Boolean AddAC(@RequestBody Account account ) {
+	            System.out.println("test ok" );
+	          
+	        return  u.signUp(account);
+	    }
 }
